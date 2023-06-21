@@ -27,13 +27,35 @@ see [realpython.com](https://realpython.com/python-toml/) for more info.
 
 Finally, you can use `yaml` if you prefer.
 
-
-
 """
+import json
 
 
-
-def parse_config(config: dict) -> dict:
+def parse_config(file_path: str) -> dict:
     """Parse the config file and return the values as a dictionary"""
-    # TODO: get the configuration from a parsed file
-    return {'location': 'TBD', 'total_spaces': 0, 'broker_host': 'TBD', 'broker_port': 0}
+    with open(config_file) as file:
+        config_data = json.load(file)
+
+    carpark_config = config_data["CarParks"][0]
+
+    # Parsing the carpark information
+    parsed_config = {
+        'name': carpark_config['name'],
+        'total-spaces': carpark_config['total-spaces'],
+        'total-cars': carpark_config['total-cars'],
+        'location': carpark_config['location'],
+        'topic-root': carpark_config['topic-root'],
+        'topic-qualifier': carpark_config['topic-qualifier'],
+        'broker': carpark_config['broker'],
+        'port': carpark_config['port'],
+        'Sensors': carpark_config['Sensors'],
+        'Displays': carpark_config['Displays'],
+    }
+
+    return parsed_config
+
+
+config_file = "config.json"
+parsed_config = parse_config(config_file)
+
+print(parsed_config)
