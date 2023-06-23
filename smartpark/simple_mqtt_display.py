@@ -5,6 +5,7 @@ class Display(mqtt_device.MqttDevice):
     def __init__(self, config):
         super().__init__(config)
         self.client.on_message = self.on_message
+        # Subscribes to the display topic and starts the loop
         self.client.subscribe('display')
         self.client.loop_forever()
 
@@ -16,10 +17,9 @@ class Display(mqtt_device.MqttDevice):
 
         print('*' * 20)
     def on_message(self, client, userdata, msg):
+       # Parses the message and extracts the separated field values
        data = msg.payload.decode()
        self.display(*data.split(','))
-       # TODO: Parse the message and extract free spaces,\
-       #  temperature, time
 
 
 if __name__ == '__main__':
